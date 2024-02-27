@@ -14,9 +14,11 @@ ENV BUILD_NUMBER=${build_number}
 
 ARG build_deps="git make g++ bzip2"
 RUN apt-get update && apt-get install -y ${build_deps} && \
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor -o /usr/share/keyrings/nodesource-archive-keyring.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/nodesource-archive-keyring.gpg] https://deb.nodesource.com/node_16.x $(lsb_release -c -s) main" | tee /etc/apt/sources.list.d/nodesource.list && \
-    apt-get update && apt-get install -y nodejs && \
+    sudo apt-get update && sudo apt-get install -y ca-certificates curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    NODE_MAJOR=20 && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list && \
+    sudo apt-get update && sudo apt-get install nodejs -y && \
     npm install -g pkg grunt grunt-cli && \
     rm -rf /var/lib/apt/lists/*
 
@@ -36,6 +38,10 @@ RUN git clone --quiet --depth 1 https://github.com/ONLYOFFICE/web-apps.git    /b
 
 ## Build
 FROM clone-stage as path-stage
+
+# patch
+COPY web-apps.patch /build/web-apps.patch
+RUN cd /build/web-apps   && git apply /build/web-apps.patch
 
 COPY server.patch /build/server.patch
 RUN cd /build/server && git apply --ignore-space-change --ignore-whitespace /build/server.patch
