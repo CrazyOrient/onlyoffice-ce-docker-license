@@ -1,4 +1,4 @@
-ARG product_version=8.0.0
+ARG product_version=8.0.1
 ARG build_tag=v8.0.1.30
 ARG build_number=1
 ARG oo_root='/var/www/onlyoffice/documentserver'
