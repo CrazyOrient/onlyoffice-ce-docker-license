@@ -30,6 +30,10 @@ ARG build_tag
 RUN git clone --quiet --branch $build_tag --depth 1 https://github.com/ONLYOFFICE/build_tools.git /build/build_tools
 RUN git clone --quiet --branch $build_tag --depth 1 https://github.com/ONLYOFFICE/server.git      /build/server
 
+# Working mobile editor
+RUN git clone --quiet --depth 1 https://github.com/ONLYOFFICE/sdkjs.git       /build/sdkjs
+RUN git clone --quiet --depth 1 https://github.com/ONLYOFFICE/web-apps.git    /build/web-apps
+
 ## Build
 FROM clone-stage as path-stage
 
