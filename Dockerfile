@@ -1,5 +1,5 @@
 ARG product_version=8.0.1
-ARG build_tag=v8.0.1.30
+ARG build_tag=v8.0.1-31
 ARG build_number=1
 ARG oo_root='/var/www/onlyoffice/documentserver'
 
@@ -51,6 +51,10 @@ FROM onlyoffice/documentserver:${product_version}.${build_number}
 ARG oo_root
 
 #server
-# COPY --from=build-stage /build/converter  ${oo_root}/server/FileConverter/converter
+COPY --from=build-stage /build/converter  ${oo_root}/server/FileConverter/converter
 COPY --from=build-stage /build/docservice ${oo_root}/server/DocService/docservice
 
+# Restore mobile editing using an old version of mobile editor
+COPY --from=build-stage /build/web-apps/deploy/web-apps/apps/documenteditor/mobile     ${oo_root}/web-apps/apps/documenteditor/mobile
+COPY --from=build-stage /build/web-apps/deploy/web-apps/apps/presentationeditor/mobile ${oo_root}/web-apps/apps/presentationeditor/mobile
+COPY --from=build-stage /build/web-apps/deploy/web-apps/apps/spreadsheeteditor/mobile  ${oo_root}/web-apps/apps/spreadsheeteditor/mobile
