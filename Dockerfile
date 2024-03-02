@@ -33,15 +33,15 @@ RUN git clone --quiet --branch $build_tag --depth 1 https://github.com/ONLYOFFIC
 RUN git clone --quiet --branch $build_tag --depth 1 https://github.com/ONLYOFFICE/server.git      /build/server
 
 # Working mobile editor
-RUN git clone --quiet --depth 1 https://github.com/ONLYOFFICE/sdkjs.git       /build/sdkjs
-RUN git clone --quiet --depth 1 https://github.com/ONLYOFFICE/web-apps.git    /build/web-apps
+#RUN git clone --quiet --depth 1 https://github.com/ONLYOFFICE/sdkjs.git       /build/sdkjs
+#RUN git clone --quiet --depth 1 https://github.com/ONLYOFFICE/web-apps.git    /build/web-apps
 
 ## Build
 FROM clone-stage as path-stage
 
 # patch
-COPY web-apps.patch /build/web-apps.patch
-RUN cd /build/web-apps   && git apply /build/web-apps.patch
+#COPY web-apps.patch /build/web-apps.patch
+#RUN cd /build/web-apps   && git apply /build/web-apps.patch
 
 COPY server.patch /build/server.patch
 RUN cd /build/server && git apply --ignore-space-change --ignore-whitespace /build/server.patch
